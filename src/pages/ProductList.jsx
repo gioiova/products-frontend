@@ -10,7 +10,7 @@ import {
     ProductListContainer
 } from "../components";
 import ProductContext from "../contexts/ProductContext";
-import ajax from "../utils/ajax";
+import { baseURL } from "../utils/ajax";
 
 let isFetched = false;
 
@@ -22,8 +22,11 @@ const ProductList = ()=> {
     useEffect(()=> {
         const getData = async ()=> {
             if(!isFetched) {
-                const response = await ajax.get('products');
-                setProducts(response.data);
+                const response = await fetch(baseURL, {
+                    method: 'GET',
+                });
+                const data = await response.json();
+                setProducts(data);
                 isFetched = true;
             }
         }
@@ -31,13 +34,20 @@ const ProductList = ()=> {
         getData().catch(err=>console.log(err));
     },[setProducts])
 
-    const handleDelete = async ()=> {
-        const response = await ajax.delete(`products/${selectedSkus}`);
-        if(response.status === 200) {
-            setProducts(products.filter(product=>!selectedSkus.includes(product.sku)));
+    const handleDelete = async () => {
+        if (selectedSkus.length === 0) return;
+
+        fetch(baseURL, {
+            method: 'POST',
+            body: JSON.stringify(selectedSkus)
+        }).then((res)=> {
+            console.log('AAAAA', res);
+            setProducts(products.filter(product => !selectedSkus.includes(product.sku)));
             setSelectedSkus([]);
-        }
-    }
+        }).catch((err)=>{
+            console.log(err);
+        })
+    };
 
     const handleChange = (e,sku) => {
         const {checked} = e.target;

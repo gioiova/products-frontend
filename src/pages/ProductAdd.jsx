@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {CustomButton, CustomInput, ErrorMessage, FormContainer, HeaderContainer, MainContainer} from "../components";
 import ButtonsWrapper from "../components/styled/ButtonsWrapper";
 import ProductContext from "../contexts/ProductContext";
-import ajax from "../utils/ajax";
+import { baseURL } from "../utils/ajax";
 
 export const type = {
     dvd:"DVD",
@@ -41,21 +41,18 @@ const ProductAdd = ()=> {
 
     const handleSubmit = e => {
         e.preventDefault();
-        ajax.post('product/save',product)
-            .then(res=> {
-                if(res.status === 200) {
-                    setProducts([...products,product]);
-                    setProduct(initialValue);
-                    navigate('/');
-                }else {
-                    console.log(res);
-                }
-            }).catch(err=> {
-                if (err.response.status === 409) {
-                    setError(err.response.data);
-                } else {
-                    console.log(err.response);
-                }
+        fetch(baseURL, {
+            method: 'POST',
+            body: JSON.stringify(product)
+        }).then(()=> {
+            handleCancel();
+        })
+        .catch(err => {
+            if (err.response && err.response.status === 409) {
+                setError(err.response.data);
+            } else {
+                console.log(err);
+            }
         });
     }
 

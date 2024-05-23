@@ -44,7 +44,11 @@ const ProductAdd = ()=> {
         fetch(baseURL, {
             method: 'POST',
             body: JSON.stringify(product)
-        }).then(()=> {
+        }).then((res)=> {
+            return res.json();
+        })
+        .then(data=> {
+            setProducts([...products, product]);
             handleCancel();
         })
         .catch(err => {

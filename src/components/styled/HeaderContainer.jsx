@@ -1,0 +1,11 @@
+import styled from "styled-components";
+
+const HeaderContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    border-bottom: 2px solid gray;
+`
+
+export default HeaderContainer;

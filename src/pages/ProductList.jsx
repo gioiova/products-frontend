@@ -64,7 +64,7 @@ const ProductList = ()=> {
                 <h1>Product List</h1>
                 <ButtonsWrapper>
                     <CustomButton id="add" className="add" onClick={()=>navigate('/addproduct')}>ADD</CustomButton>
-                    <CustomButton id="massdelete" className="delete-checkbox" disabled={selectedSkus.length === 0} onClick={handleDelete} id="delete-product-btn">MASS DELETE</CustomButton>
+                    <CustomButton id="massdelete" className="delete-checkbox" disabled={selectedSkus.length === 0} onClick={handleDelete}>MASS DELETE</CustomButton>
                 </ButtonsWrapper>
             </HeaderContainer>
             <ProductListContainer>
